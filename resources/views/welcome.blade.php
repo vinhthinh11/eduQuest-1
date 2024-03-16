@@ -10,6 +10,11 @@
 </head>
 
 <body class="antialiased">
+    @if (session()->has('login') && session()->get('login') == true)
+        <p>{{ session()->get('username') }}</p>
+    @endif
+
+
     <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
@@ -17,9 +22,6 @@
     <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
         Logout
     </a>
-    @if (Auth::guard('admins')->check())
-        <p>{{ Auth::guard('admins')->user()->name }}</p>
-    @endif
 </body>
 
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class admin extends  Authenticatable
+class admin extends  Model
 {
     protected $table = 'admins';
     protected $fillable = [

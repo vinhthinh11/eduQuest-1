@@ -7,17 +7,24 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class Admincontroller extends Controller
 {
     public function getAdmin()
     {
-        $admin = new admin();
-        $getAllAdmin = $admin->getAdmin();
+        // $check = Auth::guard('admins')->check();
+        // dd($check);
+        if (session()->has('login') && session()->get('login') == true) {
+            $admin = new admin();
+            $getAllAdmin = $admin->getAdmin();
 
-        return response()->json([
-            'getAllAdmin' => $getAllAdmin,
-        ]);
+            return response()->json([
+                'getAllAdmin' => $getAllAdmin,
+            ]);
+        } else {
+
+        }
     }
     public function indexLogin()
     {
@@ -28,33 +35,33 @@ class Admincontroller extends Controller
     {
         $result = [];
 
-        // Kiểm tra xem người dùng đã gửi dữ liệu (username và password) hay chưa
-        if ($request->has(['username', 'password'])) {
+        if ($request->has('username') && $request->has('password')) {
             $username = $request->input('username');
             $password = md5($request->input('password'));
 
-            // Tìm kiếm người dùng trong cơ sở dữ liệu
             $user = Admin::where('username', $username)
                 ->orWhere('email', $username)
                 ->first();
 
-            if ($user) {
+            if (!empty($user)) {
+                // Kiểm tra mật khẩu
                 if ($password == $user->password) {
+                    // Đăng nhập thành công
+                    // Auth::guard('admins')->login($user);
+
+                    // Lưu thông tin vào session
+                    session()->put('login', true);
+                    session()->put('permission', 'admin');
+
                     $result['status_value'] = "Đăng nhập thành công, chuẩn bị chuyển hướng...";
                     $result['status'] = 1;
 
-                    // Đặt session thông qua middleware
-                    auth('admins')->login($user);
-
-                    // Hoặc sử dụng session flash để tạo thông báo chỉ một lần
-                    session()->flash('permission', $user->permission);
                 } else {
-                    // Nếu mật khẩu không hợp lệ, trả về tin nhắn lỗi
-                    $result['status_value'] = "Sai mật khẩu!";
+                    $result['status_value'] = "Sai tài khoản hoặc mật khẩu!";
                     $result['status'] = 0;
                 }
             } else {
-                $result['status_value'] = "Tài khoản hoặc email không tồn tại!";
+                $result['status_value'] = "Sai tài khoản hoặc mật khẩu!";
                 $result['status'] = 0;
             }
         } else {
@@ -69,15 +76,16 @@ class Admincontroller extends Controller
 
 
 
-
     public function logout(Request $request)
     {
-        Auth::guard('admins')->logout();
+        session()->forget('login');
+        session()->forget('permission');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect('/admin/login');
     }
+
 
     public function updateAdmin(Request $request)
     {

@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['prefix' => '/admin'], function () {
+Route::get('/admin/login', [Admincontroller::class, 'indexLogin']);
+Route::post('/admin/logout', [Admincontroller::class, 'logout'])->name('logout');
+Route::post('/admin/submit-login', [AdminController::class, 'submitLogin']);
+Route::group(['prefix' => '/admin', 'middleware' => 'checkLoginAdmin'], function () {
     Route::get('/get', [Admincontroller::class, 'getAdmin']);
-    Route::get('/login', [Admincontroller::class, 'indexLogin']);
-    Route::post('/submit-login', [AdminController::class, 'submitLogin']);
-    Route::post('/logout', [Admincontroller::class, 'logout'])->name('logout');
     Route::post('/update-admin', [Admincontroller::class, 'updateAdmin'])->name('updateAdmin');
 });
