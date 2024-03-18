@@ -26,10 +26,10 @@ class Admincontroller extends Controller
         // } else {
         // }
     }
-    // public function indexLogin()
-    // {
-    //     return view('loginTest');
-    // }
+    public function indexLogin()
+    {
+        return view('loginTest');
+    }
 
     public function submitLogin(Request $request)
     {
