@@ -22,6 +22,9 @@ class admin extends  Model
         'avatar',
         'birthday'
     ];
+    public $timestamps = false;
+    protected $primaryKey = 'admin_id';
+
     //
     function getAdmin()
     {
