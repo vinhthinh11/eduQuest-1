@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/admin/login', [Admincontroller::class, 'indexLogin']);
+Route::get('/admin/login', [Admincontroller::class, 'indexLogin']);
 Route::post('/admin/logout', [Admincontroller::class, 'logout'])->name('logout');
 Route::post('/admin/submit-login', [AdminController::class, 'submitLogin']);
 Route::group(['prefix' => '/admin', 'middleware' => 'checkLoginAdmin'], function () {

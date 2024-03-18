@@ -37,12 +37,20 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // Thêm middleware CSRF vào nhóm route web
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            // Các middleware khác
+
         ],
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+        'local' => [
+            // Loại bỏ middleware CSRF trong môi trường local
+            \App\Http\Middleware\VerifyCsrfToken::class,
         ],
     ];
 
@@ -66,4 +74,7 @@ class Kernel extends HttpKernel
         'checkLoginAdmin' => \App\Http\Middleware\checkadminLogin::class,
 
     ];
+
+    // Trong file app/Http/Kernel.php
+
 }
