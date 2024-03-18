@@ -114,8 +114,7 @@ class Admincontroller extends Controller
                 $email = $row['D'];
                 $password = md5($row['E']);
                 $birthday = $row['F'];
-                $gender = ($row['G'] == 'Nam') ? 2 : (($row['G'] == 'Nữ') ? 3 : 1);
-
+                // $gender = ($row['G'] == 'Nam') ? 2 : (($row['G'] == 'Nữ') ? 3 : 1);
                 $admin = new Admin([
                     'name' => $name,
                     'username' => $username,
