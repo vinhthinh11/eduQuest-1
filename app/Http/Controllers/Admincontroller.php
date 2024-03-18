@@ -125,7 +125,6 @@ class Admincontroller extends Controller
                     'last_login' => now(),
                 ]);
 
-                // Lưu đối tượng Admin
                 if ($admin->saveQuietly()) {
                     $count++;
                 } else {
