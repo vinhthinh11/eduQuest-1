@@ -25,7 +25,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'checkLoginAdmin'], function
     Route::get('/index', [AdminController::class, 'indexAdmin']);
     Route::post('/create-admin', [AdminController::class, 'createAdmin'])->name('createAdmin');
     Route::delete('/delete-admin', [AdminController::class, 'deleteAdmin'])->name('deleteAdmin');
-    Route::put('/update-admin', [AdminController::class, 'updateAdmin'])->name('updateAdmin');
+    Route::get('/get-admin/{id}', [AdminController::class, 'getAdminId']);
+    Route::post('/update-admin/{id}', [AdminController::class, 'updateAdmin'])->name('updateAdmin');
 });
 
 

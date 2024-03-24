@@ -37,9 +37,9 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            // Thêm middleware CSRF vào nhóm route web
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            // Các middleware khác
+            // // Thêm middleware CSRF vào nhóm route web
+            // \App\Http\Middleware\VerifyCsrfToken::class,
+            // // Các middleware khác
 
         ],
 
@@ -48,10 +48,10 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-        'local' => [
-            // Loại bỏ middleware CSRF trong môi trường local
-            \App\Http\Middleware\VerifyCsrfToken::class,
-        ],
+        // 'local' => [
+        //     // Loại bỏ middleware CSRF trong môi trường local
+        //     \App\Http\Middleware\VerifyCsrfToken::class,
+        // ],
     ];
 
     /**
