@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class truongbomon extends  Model
+class subject_head extends  Model
 {
     protected $table = 'subject_head';
     protected $fillable = [

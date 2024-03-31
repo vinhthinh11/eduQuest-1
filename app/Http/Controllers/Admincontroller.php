@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use App\Models\truongbomon;
+use App\Models\subject_head;
 
 class Admincontroller extends Controller
 {
@@ -238,7 +238,7 @@ class Admincontroller extends Controller
     // quản lý trưởng bộ môn
     public function getTBM()
     {
-        $tbm = new truongbomon();
+        $tbm = new subject_head();
         $getAllTBM = $tbm->getTBM();
 
         return response()->json([
@@ -281,24 +281,30 @@ class Admincontroller extends Controller
                 $birthday = $row['F'];
                 $gender = ($row['G'] == 'Nam') ? 2 : (($row['G'] == 'Nữ') ? 3 : 1);
                 $subject = ($row['H'] == 'Toán') ? 1 : (($row['H'] == 'Ngữ Văn') ? 2 :  3);
-                $tbm = new truongbomon([
-                    'name' => $name,
-                    'username' => $username,
-                    'email' => $email,
-                    'password' => $password,
-                    'birthday' => $birthday,
-                    'gender_id' => $gender,
-                    'subject_id' => $subject,
-                    'last_login' => now(),
-                ]);
 
-                if ($tbm->saveQuietly()) {
-                    $count++;
+                if (!empty($name)) {
+                    $tbm = new subject_head([
+                        'name' => $name,
+                        'username' => $username,
+                        'email' => $email,
+                        'password' => $password,
+                        'birthday' => $birthday,
+                        'gender_id' => $gender,
+                        'subject_id' => $subject,
+                        'last_login' => now(),
+                    ]);
+
+                    if ($tbm->save()) {
+                        $count++;
+                    } else {
+                        $errList[] = $row['A'];
+                    }
                 } else {
-                    $errList[] = $row['A'];
+                    $result['status_value'] = "Trường name trống!";
                 }
+
+
             }
-            //Xóa tệp
             unlink($filePath);
 
             if (empty($errList)) {
@@ -312,12 +318,11 @@ class Admincontroller extends Controller
             $result['status_value'] = "Không tìm thấy tệp được tải lên!";
             $result['status'] = 0;
         }
-
         return response()->json($result);
-        // return response()->json([
-        //     'result' => $result,
-        // ]);
+
     }
+
+
     public function indexTBM()
     {
         return view('admin.TBM');
@@ -334,7 +339,7 @@ class Admincontroller extends Controller
         $gender = $request->input('gender');
         $subject = $request->input('subject');
 
-        $tbm = new truongbomon([
+        $tbm = new subject_head([
             'name' => $name,
             'username' => $username,
             'password' => $password,
@@ -364,7 +369,7 @@ class Admincontroller extends Controller
 
     public function deleteTBM(Request $request)
     {
-        $tbm = truongbomon::find($request->subject_head_id);
+        $tbm = subject_head::find($request->subject_head_id);
         // dd($tbm);
         if ($tbm) {
             $tbm->delete();
@@ -384,7 +389,7 @@ class Admincontroller extends Controller
 
     public function updateTNM(Request $request)
     {
-        $tbm = truongbomon::where('id', $request->id)->first();
+        $tbm = subject_head::where('id', $request->id)->first();
 
         $data = $tbm->all();
         if (isset($tbm)) {
