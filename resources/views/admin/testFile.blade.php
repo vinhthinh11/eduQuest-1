@@ -14,9 +14,6 @@
                 <span>File</span>
                 <input type="file" name="file" id="file" required>
             </div>
-            <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-            </div>
             <br>
             <div class="input-field" style="padding-left: 0">
                 <button class="btn" type="submit" name="submit">Thêm</button>
